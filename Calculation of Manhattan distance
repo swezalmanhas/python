@@ -1,0 +1,18 @@
+def heuristic_manhattan(s,g):
+    spos1=spos2=gpos1=gpos2=0
+    value=0
+    for i in range(1,9):
+        for j in range(0,3):
+            for k in range(0,3):
+                if s[j][k]==i:
+                    spos1=j
+                    spos2=k
+                if g[j][k]==i:
+                    gpos1=j
+                    gpos2=k
+        value=value+abs(spos1+spos2-gpos1-gpos2)
+    return value
+s=[[2,'-',3],[1,8,4],[7,6,5]]
+g=[[1,2,3],[8,'-',4],[7,6,5]]
+
+print(heuristic_manhattan(s,g))
