@@ -1,0 +1,15 @@
+visited = []
+
+def dfs_depth_limited(visited, graph, node, finish, max_depth, current_depth):
+    if finish in visited:
+        return
+    elif node not in visited and current_depth <= max_depth:
+        visited.append(node)
+        for neighbour in graph[node]:
+            dfs_depth_limited(visited, graph, neighbour, finish, max_depth, current_depth+1)
+
+print("Following is the Depth-Limited Search")
+
+max_depth = int(input("Enter the maximum depth: "))
+dfs_depth_limited(visited, graph, 1, 13, max_depth, 0)
+print(visited)
