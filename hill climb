@@ -1,0 +1,80 @@
+import copy
+
+def compare(s,g):
+    if s==g:
+        return(1)
+    else:
+        return(0)
+
+def find_pos(s):
+    for i in range(3):
+        for j in range(3):
+            if s[i][j] == 0:
+                return([i,j])
+
+def up(s,pos):
+    if pos[0] > 0:
+        temp = copy.deepcopy(s)
+        temp[pos[0]][pos[1]],temp[pos[0]-1][pos[1]]=temp[pos[0]-1][pos[1]],temp[pos[0]][pos[1]]
+        return (temp)
+    else:
+        return (s)
+
+def down(s,pos):
+    if pos[0] < 2:
+        temp = copy.deepcopy(s)
+        temp[pos[0]][pos[1]],temp[pos[0]+1][pos[1]]=temp[pos[0]+1][pos[1]],temp[pos[0]][pos[1]]
+        return (temp)
+    else:
+        return (s)
+
+def right(s,pos):
+    if pos[1] < 2:
+        temp = copy.deepcopy(s)
+        temp[pos[0]][pos[1]],temp[pos[0]][pos[1]+1]=temp[pos[0]][pos[1]+1],temp[pos[0]][pos[1]]
+        return (temp)
+    else:
+        return (s)
+
+def left(s,pos):
+    if pos[1] > 0:
+        temp = copy.deepcopy(s)
+        temp[pos[0]][pos[1]],temp[pos[0]][pos[1]-1]=temp[pos[0]][pos[1]-1],temp[pos[0]][pos[1]]
+        return (temp)
+    else:
+        return (s)
+
+def search(s,g):
+    curr_state = copy.deepcopy(s)
+    if s == g:
+        return []
+    visited = [curr_state]
+    while True:
+        pos = find_pos(curr_state)
+        neighbors = [up(curr_state,pos), down(curr_state,pos), right(curr_state,pos), left(curr_state,pos)]
+        neighbors = [n for n in neighbors if n != curr_state and n not in visited]
+        if not neighbors:
+            return []
+        neighbors.sort(key=lambda n: heuristic(n, g))
+        curr_state = neighbors[0]
+        visited.append(curr_state)
+        if curr_state == g:
+            return visited
+
+def heuristic(s,g):
+    d = 0
+    for i in range(3):
+        for j in range(3):
+            if s[i][j] != g[i][j] and s[i][j]!=0:
+                d += 1
+    return d
+
+s = [[2,0,3],[1,8,4],[7,6,5]]
+g = [[1,2,3],[8,0,4],[7,6,5]]
+path = search(s,g)
+if path:
+    print("Found! The intermediate states are:")
+    for state in path:
+        print(state)
+else:
+    print("Not found")
